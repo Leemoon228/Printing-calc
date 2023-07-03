@@ -32,11 +32,17 @@ namespace Printing_calc
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.NumberOfPages = Int32.Parse(txtNumberOfPages.Text);
-            viewModel.PricePerPage = Decimal.Parse(txtPricePerPage.Text);
+            viewModel.NumberOfPages = Int32.Parse(Empty_check(txtNumberOfPages.Text));
+            viewModel.PricePerPage = Decimal.Parse(Empty_check(txtPricePerPage.Text));
             viewModel.CalculatePrintingCost();
         }
 
-
+        private static string Empty_check(string input)
+        {
+            string str = new string(input.Where(c => char.IsDigit(c)).ToArray());
+            if (str=="")
+                return "0";
+            return new string(input.Where(c => char.IsDigit(c)).ToArray());
+        }
     }
 }
