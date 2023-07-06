@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:Printing_calc"
              StartupUri="View\MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="TextInputStyle" TargetType="TextBox">
+            <Setter Property="Control.FontFamily" Value="Verdana" />
+            <Setter Property="Control.Background" Value="White" />
+            <Setter Property="Control.Foreground" Value="Black" />
+            <Setter Property="Height" Value="24"/>
+        </Style>
     </Application.Resources>
 </Application>

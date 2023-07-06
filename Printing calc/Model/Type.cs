@@ -7,19 +7,30 @@ using System.Threading.Tasks;
 
 namespace Printing_calc.Model
 {
-    internal class Type
+    internal class Type : INotifyPropertyChanged
     {
 
         private string? printingType;
-        private string[] types = { "A0", "A1", "A2", "A3", "A4", "A5" };
+        private string[] types = { "Листовая печать", "Визитки", "Брошюры", "Визитки", "Плакаты", "Папки", "Наклейки" };
+        private Format[] capableFormats = {  };
 
-        public string PrintingType
+        public string SelectedType
         {
-            get { return printingType; }
+            get { return SelectedType; }
             set
             {
-                printingType = value;
+                SelectedType = value;
                 OnPropertyChanged("PrintingType");
+            }
+        }
+
+        public string[] Types
+        {
+            get { return types; }
+            set
+            { 
+                types = value;
+                OnPropertyChanged("Types");
             }
         }
 

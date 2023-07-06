@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace Printing_calc.Model
 {
-    internal class Format: INotifyPropertyChanged
+    internal class Format : INotifyPropertyChanged
     {
         private string? formatType;
-        private string[] types = {"A0", "A1", "A2", "A3", "A4", "A5"};
+        private string[] possibleFormats = { "A0", "A1", "A2", "A3", "A4", "A5" };
+        private decimal cost = 1;
 
         public string FormatType
         {
@@ -21,6 +22,17 @@ namespace Printing_calc.Model
                 OnPropertyChanged("FormatType");
             }
         }
+
+        public decimal Cost
+        {
+            get { return cost; }
+            set
+            {
+                cost = value;
+                OnPropertyChanged("Cost");
+            }
+        }
+
 
 
 
