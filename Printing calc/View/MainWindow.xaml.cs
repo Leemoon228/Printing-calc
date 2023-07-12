@@ -44,5 +44,15 @@ namespace Printing_calc
                 return "0";
             return new string(input.Where(c => char.IsDigit(c)).ToArray());
         }
+
+        private void Add_ProductType_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Add_Format_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

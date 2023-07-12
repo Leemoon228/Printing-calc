@@ -3,18 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Printing_calc"
+        xmlns:local="clr-namespace:Printing_calc" 
+        xmlns:viewmodel="clr-namespace:Printing_calc.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:PrintingCostCalculatorViewModel}"
         mc:Ignorable="d"
         Title="Типографный калькулятор" Height="400" Width="650" MinWidth="600" MinHeight="350">
 
 
     <Grid Background="#B8B3A0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="11*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -22,20 +25,86 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Column="0" Grid.ColumnSpan="3" Content="Расчёт стоимоcти печати" FontSize="20" HorizontalAlignment="Center" Margin="0,10,0,10" Width="250"/>
+        <Label Content="Расчёт стоимоcти печати" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Width="250" Grid.ColumnSpan="3"/>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Label Content="Количество страниц:" Height="29" Width="127"/>
-            <TextBox x:Name="txtNumberOfPages" Width="24" Margin="10,0" Style="{StaticResource TextInputStyle }"/>
+
+        <Label Content="Тип печатаемой продукции:" Grid.Row="1" 
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <ComboBox  Width="auto" 
+                  ItemsSource="{Binding ProductTypes}" SelectedItem="{Binding SelectedType}" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=CurrentType}"/>
+
+                            <TextBlock Text="{Binding Path=BaseCostPerPage, StringFormat=' {0} р/шт'}"/>
+
+                        </StackPanel>
+                    </DataTemplate>
+
+                </ComboBox.ItemTemplate>
+
+            </ComboBox>
+            <Button Width="15" Height="15" Click="Add_ProductType_Click" 
+                    Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                <Button.Content>
+                    <Canvas >
+                        <Line X1="-5" Y1="0" X2="5" Y2="0" Stroke="Black" StrokeThickness="1" />
+                        <Line X1="0" Y1="-5" X2="0" Y2="5" Stroke="Black" StrokeThickness="1" />
+                    </Canvas>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+        <Label Content="Формат печатаемой продукции:" Grid.Row="1" Grid.Column="1"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Grid.Row="1" Grid.Column="1">
+                <ComboBox  Width="auto" ItemsSource="{Binding ProductFormats}" SelectedItem="{Binding SelectedFormat}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=CurrentFormat}"/>
+    
+                            <TextBlock Text="{Binding Path=BaseCostPerPage, StringFormat=' {0} р/шт'}"/>
+    
+                        </StackPanel>
+                    </DataTemplate>
+
+                </ComboBox.ItemTemplate>
+
+            </ComboBox>
+            <Button Width="15" Height="15" Click="Add_Format_Click" 
+                    Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                <Button.Content>
+                    <Canvas>
+                        <Line X1="-5" Y1="0" X2="5" Y2="0" Stroke="Black" StrokeThickness="1" />
+                        <Line X1="0" Y1="-5" X2="0" Y2="5" Stroke="Black" StrokeThickness="1" />
+                    </Canvas>
+                </Button.Content>
+            </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" >
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,216,76" Grid.RowSpan="2">
+            <Label Content="Количество страниц:" Height="29" Width="127"/>
+            <TextBox x:Name="txtNumberOfPages" Width="24" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
+                     TextWrapping="NoWrap" TextAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,216,0" >
             <Label Content="Стоимость страницы:" Height="28"/>
             <TextBox x:Name="txtPricePerPage" Width="24" Margin="10,0" Height="22" />
         </StackPanel>
-        <TextBlock Grid.Row="3" TextWrapping="Wrap" Text="{Binding Path=TotalCost, StringFormat='Total Cost: {0:N}'}"/>
+        <TextBlock Grid.Row="3" TextWrapping="Wrap" Text="{Binding Path=TotalCost, StringFormat='Total Cost: {0:N}'}" Grid.ColumnSpan="2" Margin="0,76,216,0" Grid.RowSpan="2"/>
 
-        <Button Grid.Row="4" Content="Calculate" Width="100" HorizontalAlignment="Left" Margin="55,15,0,15" Click="Calculate_Click" Grid.Column="2"/>
+        <Button Grid.Row="5" Content="Calculate" Width="100" HorizontalAlignment="Left" Margin="55,15,0,15" Click="Calculate_Click" Grid.Column="2"/>
+
+
 
     </Grid>
 
