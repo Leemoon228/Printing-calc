@@ -8,6 +8,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
+using static System.Formats.Asn1.AsnWriter;
+using System.Windows.Documents;
+using System.Xml.Linq;
+using System.Windows.Media;
 
 namespace Printing_calc.ViewModel
 {
@@ -18,28 +22,29 @@ namespace Printing_calc.ViewModel
         private decimal totalCost;
         private ProductType selectedType;
         private Format selectedFormat;
-        public ObservableCollection<ProductType> ProductTypes { get; set; }
-        public ObservableCollection<Format> ProductFormats { get; set; }
-        private string[] notCapableThings;
+
+        private List<ProductType> ProductTypes = new List<ProductType>();
+        private List<Format> ProductFormats = new List<Format>();
+        public ObservableCollection<ProductType> CurrentProductTypes { get; set; }
+        public ObservableCollection<Format> CurrentProductFormats { get; set; }
+        private Dictionary<string, bool> CapableThings = new Dictionary<string, bool>();
 
         public PrintingCostCalculatorViewModel()
         {
-            ProductTypes = new ObservableCollection<ProductType> //TODO бд с сохраненными типами
-            {
-                new ProductType { Name = ProductType.types[1], BaseCost = 2M},
-                new ProductType { Name = ProductType.types[2], BaseCost = 3.5M},
-                new ProductType { Name = ProductType.types[3], BaseCost = 4M}
-            };
-            SelectedType = ProductTypes[0];
+            CurrentProductTypes = new ObservableCollection<ProductType>();
 
-            ProductFormats = new ObservableCollection<Format>
-            { 
-                new Format { CurrentFormat = "A4", Cost=10},
-                new Format { CurrentFormat = "A5", Cost=7},
-                new Format { CurrentFormat = "A6", Cost=5}
-            };
-            SelectedFormat = ProductFormats[0];
-            //CreateDataBase();
+
+            CurrentProductFormats = new ObservableCollection<Format>();
+
+
+
+            GetData();
+            CurrentProductTypes = new ObservableCollection<ProductType>(ProductTypes);
+            SelectedType = CurrentProductTypes[0];
+
+            UpdateNotCapable();
+            SelectedFormat = CurrentProductFormats[0];
+
 
 
 
@@ -47,26 +52,95 @@ namespace Printing_calc.ViewModel
 
         private void GetData()
         {
-
-        }
-
-/*        public static void CreateDataBase()
-        {
-            using (var connection = new SqliteConnection("Data Source=scoresdata.db"))
+            using (var connection = new SqliteConnection("Data Source=data.db"))
             {
                 connection.Open();
 
-                SqliteCommand command = new SqliteCommand();
-                command.Connection = connection;
-                command.CommandText = "CREATE TABLE ProductTypes(_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT NOT NULL, BaseCost TEXT NOT NULL, PerPage INTEGER)";
-                command.ExecuteNonQuery();
-                command.CommandText = "CREATE TABLE Formats(_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT NOT NULL, BaseCost TEXT NOT NULL, PerPage INTEGER)";
-                command.ExecuteNonQuery();
-                command.CommandText = "CREATE TABLE Colors(_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT NOT NULL, BaseCost TEXT NOT NULL, PerPage INTEGER)";
-                command.ExecuteNonQuery();
+                string sqlExpression = "SELECT * FROM ProductTypes ORDER BY Name DESC";
+                SqliteCommand command = new SqliteCommand(sqlExpression, connection);
+
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+                    ProductTypes.Clear();
+                    if (reader.HasRows) // если есть данные
+                    {
+
+                        while (reader.Read())   // построчно считываем данные
+                        {
+                            var id = Convert.ToInt32(reader.GetValue(0));
+                            var name = (string)reader.GetValue(1);
+                            var baseCost = (string)reader.GetValue(2);
+                            var perPage = Convert.ToBoolean(reader.GetValue(3));
+                            var notCapable = ((string)reader.GetValue(4)).Split('|').ToList();
+                            ProductTypes.Add(new ProductType { Id = id, Name = name, BaseCost = decimal.Parse(baseCost), PerPage = perPage, NotCapable = notCapable });
+                            CapableThings.Add(name, true);
+                        }
+                    }
+                }
+
+
+                sqlExpression = "SELECT * FROM Formats ORDER BY Name DESC";
+                command = new SqliteCommand(sqlExpression, connection);
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+                    ProductFormats.Clear();
+                    if (reader.HasRows) // если есть данные
+                    {
+                        while (reader.Read())   // построчно считываем данные
+                        {
+                            var id = Convert.ToInt32(reader.GetValue(0));
+                            var name = (string)reader.GetValue(1);
+                            var baseCost = (string)reader.GetValue(2);
+                            var perPage = Convert.ToBoolean(reader.GetValue(3));
+                            var bothSides = Convert.ToBoolean(reader.GetValue(4));
+                            var twoSideAdditionalCost = (string)reader.GetValue(5);
+                            var notCapable = ((string)reader.GetValue(6)).Split('|').ToList();
+                            ProductFormats.Add(new Format { Id = id, Name = name, BaseCost = decimal.Parse(baseCost), PerPage = perPage, BothSides = bothSides, SecondSide=decimal.Parse(twoSideAdditionalCost), NotCapable = notCapable });
+                            CapableThings.Add(name, true);
+                        }
+                    }
+                }
+
+
+
                 connection.Close();
             }
-        }*/
+        }
+
+        public void UpdateNotCapable()
+        {
+
+            foreach (string i in SelectedType.NotCapable)
+                CapableThings[i] = false;
+
+            if (selectedFormat!= null)
+            {
+                if (CapableThings.ContainsKey(SelectedFormat.Name))
+                    if (CapableThings[SelectedFormat.Name] == false)
+                        SelectedFormat = CurrentProductFormats[0];
+
+                foreach (string i in SelectedFormat.NotCapable)
+                    CapableThings[i] = false;
+            }
+
+            /*            if (!CurrentProductFormats.Contains(SelectedFormat))
+                            SelectedFormat = CurrentProductFormats[0];*/
+
+            /*List<Format> toRemove = new List<Format>();
+            foreach(Format i in CurrentProductFormats)
+            {
+                if (NotCapableThings.Contains(i.Name))
+                    toRemove.Add(i);
+            }
+            foreach (Format i in toRemove)
+                CurrentProductFormats.Remove(i);
+            if (!CurrentProductFormats.Contains(SelectedFormat))
+                SelectedFormat = CurrentProductFormats[0];
+
+            foreach(string a in SelectedFormat.NotCapable) // Adding not capable things from format
+                NotCapableThings.Add(a);*/
+        }
+
 
 
         public ProductType SelectedType
@@ -75,6 +149,7 @@ namespace Printing_calc.ViewModel
             set
             {
                 selectedType = value;
+                UpdateNotCapable();
                 OnPropertyChanged("SelectedType");
             }
         }
@@ -84,6 +159,7 @@ namespace Printing_calc.ViewModel
             set
             {
                 selectedFormat = value;
+                UpdateNotCapable();
                 OnPropertyChanged("SelectedFormat");
             }
         }
