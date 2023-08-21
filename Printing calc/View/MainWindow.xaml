@@ -133,7 +133,8 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,216,0" >
             <Label Content="Стоимость страницы:" Height="28"/>
-            <TextBox x:Name="txtPricePerPage" Width="24" Margin="10,0" Height="22" />
+            <TextBox x:Name="txtPricePerPage" Width="24" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
+                     TextWrapping="NoWrap" TextAlignment="Center" />
         </StackPanel>
         <TextBlock Grid.Row="5" Grid.Column="2" TextWrapping="Wrap" Text="{Binding Path=TotalCost, StringFormat='Total Cost: {0:N}'}" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" Height="auto" Width="auto"/>
