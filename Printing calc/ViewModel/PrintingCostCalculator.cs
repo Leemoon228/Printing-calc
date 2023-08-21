@@ -12,6 +12,7 @@ using static System.Formats.Asn1.AsnWriter;
 using System.Windows.Documents;
 using System.Xml.Linq;
 using System.Windows.Media;
+using System.Printing;
 
 namespace Printing_calc.ViewModel
 {
@@ -25,25 +26,25 @@ namespace Printing_calc.ViewModel
 
         private List<ProductType> ProductTypes = new List<ProductType>();
         private List<Format> ProductFormats = new List<Format>();
+        private List<ProductColour> ProductColors = new List<ProductColour>();
         public ObservableCollection<ProductType> CurrentProductTypes { get; set; }
         public ObservableCollection<Format> CurrentProductFormats { get; set; }
         private Dictionary<string, bool> CapableThings = new Dictionary<string, bool>();
+        private List<List<string>> ListsNotCapable = new List<List<string>>();
 
         public PrintingCostCalculatorViewModel()
         {
             CurrentProductTypes = new ObservableCollection<ProductType>();
-
-
             CurrentProductFormats = new ObservableCollection<Format>();
 
 
 
             GetData();
             CurrentProductTypes = new ObservableCollection<ProductType>(ProductTypes);
-            SelectedType = CurrentProductTypes[0];
+            //SelectedType = CurrentProductTypes[0];
 
-            UpdateNotCapable();
-            SelectedFormat = CurrentProductFormats[0];
+            //UpdateNotCapable();
+            //SelectedFormat = CurrentProductFormats[0];
 
 
 
@@ -107,21 +108,23 @@ namespace Printing_calc.ViewModel
             }
         }
 
-        public void UpdateNotCapable()
+        public void UpdateNotCapable(string changed)
         {
 
-            foreach (string i in SelectedType.NotCapable)
-                CapableThings[i] = false;
+            if (selectedType != null && !ListsNotCapable.Contains(selectedType.NotCapable))
+                ListsNotCapable.Add(selectedType.NotCapable);
 
-            if (selectedFormat!= null)
-            {
-                if (CapableThings.ContainsKey(SelectedFormat.Name))
-                    if (CapableThings[SelectedFormat.Name] == false)
-                        SelectedFormat = CurrentProductFormats[0];
 
-                foreach (string i in SelectedFormat.NotCapable)
-                    CapableThings[i] = false;
-            }
+            if (selectedFormat!= null && !ListsNotCapable.Contains(selectedFormat.NotCapable))
+                ListsNotCapable.Add(selectedFormat.NotCapable);
+
+            if (changed == "SelectedType")
+                UpdateFormat();
+
+            if (changed == "SelectedType")
+                UpdateColors();
+
+
 
             /*            if (!CurrentProductFormats.Contains(SelectedFormat))
                             SelectedFormat = CurrentProductFormats[0];*/
@@ -141,6 +144,24 @@ namespace Printing_calc.ViewModel
                 NotCapableThings.Add(a);*/
         }
 
+        void UpdateFormat() {
+            CurrentProductFormats.Clear();
+            foreach (Format newFormat in ProductFormats)
+            {
+                bool flag = true;
+                foreach (List<string> ListNotCapableStrings in ListsNotCapable)
+                    foreach (string NotCapableThing in ListNotCapableStrings)
+                        if (NotCapableThing == newFormat.Name)
+                            flag = false;
+                if (flag)
+                    CurrentProductFormats.Add(newFormat);
+            }
+        }
+
+        void UpdateColors() { 
+        
+        }
+
 
 
         public ProductType SelectedType
@@ -148,8 +169,10 @@ namespace Printing_calc.ViewModel
             get { return selectedType; }
             set
             {
+                if (SelectedType!=null) 
+                    ListsNotCapable.Remove(SelectedType.NotCapable);
                 selectedType = value;
-                UpdateNotCapable();
+                UpdateNotCapable("SelectedType");
                 OnPropertyChanged("SelectedType");
             }
         }
@@ -158,8 +181,10 @@ namespace Printing_calc.ViewModel
             get { return selectedFormat; }
             set
             {
+                if (SelectedFormat!=null)
+                    ListsNotCapable.Remove(SelectedFormat.NotCapable);
                 selectedFormat = value;
-                UpdateNotCapable();
+                UpdateNotCapable("SelectedFormat");
                 OnPropertyChanged("SelectedFormat");
             }
         }

@@ -28,68 +28,103 @@
         <Label Content="Расчёт стоимоcти печати" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"
                 Width="250" Grid.ColumnSpan="3"/>
 
-
-        <Label Content="Тип печатаемой продукции:" Grid.Row="1" 
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <Label Content="Тип печатаемой продукции:" Grid.Row="1" 
                HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto"/>
 
-        <StackPanel Margin="5,0,0,0" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <ComboBox  Width="160" 
-                  ItemsSource="{Binding ProductTypes}" SelectedItem="{Binding SelectedType}" >
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=Name}"/>
+            <StackPanel Margin="5,0,0,0" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <ComboBox HorizontalContentAlignment="Center" Width="160" 
+                      ItemsSource="{Binding CurrentProductTypes}" SelectedItem="{Binding SelectedType}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Name}"/>
 
-                            <TextBlock Text="{Binding Path=BaseCost, StringFormat=' {0} р/шт'}"/>
+                                <TextBlock Text="{Binding Path=BaseCost, StringFormat=' {0}р/шт'}"/>
 
-                        </StackPanel>
-                    </DataTemplate>
+                            </StackPanel>
+                        </DataTemplate>
 
-                </ComboBox.ItemTemplate>
+                    </ComboBox.ItemTemplate>
 
-            </ComboBox>
-            <Button Width="15" Height="15" Click="Add_ProductType_Click" 
+                </ComboBox>
+                <Button Width="15" Height="15" Click="Add_ProductType_Click" 
                     Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
 
-                <Button.Content>
-                    <Canvas >
-                        <Line X1="-5" Y1="0" X2="5" Y2="0" Stroke="Black" StrokeThickness="1" />
-                        <Line X1="0" Y1="-5" X2="0" Y2="5" Stroke="Black" StrokeThickness="1" />
-                    </Canvas>
-                </Button.Content>
-            </Button>
-        </StackPanel>
-        <Label Content="Формат печатаемой продукции:" Grid.Row="1" Grid.Column="1"
+                    <Button.Content>
+                        <Canvas >
+                            <Line X1="-5" Y1="0" X2="5" Y2="0" Stroke="Black" StrokeThickness="1" />
+                            <Line X1="0" Y1="-5" X2="0" Y2="5" Stroke="Black" StrokeThickness="1" />
+                        </Canvas>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+            <Label Content="Формат печатаемой продукции:" Grid.Row="1" Grid.Column="1"
                HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto"/>
 
-        <StackPanel Margin="5,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Grid.Row="1" Grid.Column="1">
-            <ComboBox  Width="auto" ItemsSource="{Binding ProductFormats}" SelectedItem="{Binding SelectedFormat}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=Name}"/>
+            <StackPanel Margin="5,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Grid.Row="1" Grid.Column="1">
+                <ComboBox HorizontalContentAlignment="Center"  Width="160" ItemsSource="{Binding CurrentProductFormats}" SelectedItem="{Binding SelectedFormat}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Name}"/>
 
-                            <TextBlock Text="{Binding Path=BaseCost, StringFormat=' {0} р/шт'}"/>
+                                <TextBlock Text="{Binding Path=BaseCost, StringFormat=' {0}р/шт'}"/>
 
-                        </StackPanel>
-                    </DataTemplate>
+                            </StackPanel>
+                        </DataTemplate>
 
-                </ComboBox.ItemTemplate>
+                    </ComboBox.ItemTemplate>
 
-            </ComboBox>
-            <Button Width="15" Height="15" Click="Add_Format_Click" 
+                </ComboBox>
+                <Button Width="15" Height="15" Click="Add_Format_Click" 
                     Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
 
-                <Button.Content>
-                    <Canvas>
-                        <Line X1="-5" Y1="0" X2="5" Y2="0" Stroke="Black" StrokeThickness="1" />
-                        <Line X1="0" Y1="-5" X2="0" Y2="5" Stroke="Black" StrokeThickness="1" />
-                    </Canvas>
-                </Button.Content>
-            </Button>
-        </StackPanel>
+                    <Button.Content>
+                        <Canvas>
+                            <Line X1="-5" Y1="0" X2="5" Y2="0" Stroke="Black" StrokeThickness="1" />
+                            <Line X1="0" Y1="-5" X2="0" Y2="5" Stroke="Black" StrokeThickness="1" />
+                        </Canvas>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+        </Grid>
 
+        <Grid Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">
+            <Label HorizontalContentAlignment="Center" Content="Тип используемых красок:" Grid.Row="1" 
+               HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto"/>
 
+            <StackPanel Margin="5,0,0,0" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <ComboBox HorizontalContentAlignment="Center" Width="160" 
+                      ItemsSource="{Binding CurrentProductTypes}" SelectedItem="{Binding SelectedType}" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Name}"/>
+
+                                <TextBlock Text="{Binding Path=BaseCost, StringFormat=' {0}р/шт'}"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+
+                    </ComboBox.ItemTemplate>
+
+                </ComboBox>
+                <Button Width="15" Height="15" Click="Add_ProductType_Click" 
+                    Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                    <Button.Content>
+                        <Canvas >
+                            <Line X1="-5" Y1="0" X2="5" Y2="0" Stroke="Black" StrokeThickness="1" />
+                            <Line X1="0" Y1="-5" X2="0" Y2="5" Stroke="Black" StrokeThickness="1" />
+                        </Canvas>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+        </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,216,76" Grid.RowSpan="2">
             <Label Content="Количество страниц:" Height="29" Width="127"/>
             <TextBox x:Name="txtNumberOfPages" Width="24" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
