@@ -10,7 +10,7 @@
         Title="Типографный калькулятор" Height="400" Width="650" MinWidth="600" MinHeight="350">
 
 
-    <Grid Background="#B8B3A0">
+    <Grid Background="#FFE5BC">
         <Grid.RowDefinitions>
             <RowDefinition Height="7*"/>
             <RowDefinition Height="7*"/>
@@ -125,21 +125,26 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,216,76" Grid.RowSpan="2">
-            <Label Content="Количество страниц:" Height="29" Width="127"/>
-            <TextBox x:Name="txtNumberOfPages" Width="24" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label Content="Количество экземпляров:" Width="152" Height="29" HorizontalAlignment="Right"/>
+            <TextBox x:Name="txtNumberOfPages" PreviewTextInput="NumberValidationTextBox" 
+                     Width="36" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
                      TextWrapping="NoWrap" TextAlignment="Center"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,216,0" >
-            <Label Content="Стоимость страницы:" Height="28"/>
-            <TextBox x:Name="txtPricePerPage" Width="24" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
+        <StackPanel Grid.Row="3" Orientation="Horizontal" >
+            <CheckBox VerticalAlignment="Center"/>
+            <Label  Content="Стоимость экземпляра:" Width="152" Height="29"/>
+            <TextBox x:Name="txtPricePerPage" PreviewTextInput="FloatNumberValidationTextBox"
+                     Width="36" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
                      TextWrapping="NoWrap" TextAlignment="Center" />
+
+
         </StackPanel>
-        <TextBlock Grid.Row="5" Grid.Column="2" TextWrapping="Wrap" Text="{Binding Path=TotalCost, StringFormat='Total Cost: {0:N}'}" 
+        <TextBlock Grid.Row="5" Grid.Column="2" TextWrapping="Wrap" Text="{Binding Path=TotalCost, StringFormat='Стоимость тиража: {0:G} р.'}" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" Height="auto" Width="auto"/>
 
-        <Button Grid.Row="4" Content="Calculate" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Calculate_Click" Grid.Column="2"/>
+        <Button Grid.Row="4" Content="Расчет" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Calculate_Click" Grid.Column="2"/>
 
 
 

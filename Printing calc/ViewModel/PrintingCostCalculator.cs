@@ -23,6 +23,13 @@ namespace Printing_calc.ViewModel
         private decimal totalCost;
         private ProductType selectedType;
         private Format selectedFormat;
+        private bool discount;
+        private decimal discountNumber;
+        private decimal discountPercent;
+
+
+
+        
 
         private List<ProductType> ProductTypes = new List<ProductType>();
         private List<Format> ProductFormats = new List<Format>();
@@ -41,10 +48,6 @@ namespace Printing_calc.ViewModel
 
             GetData();
             CurrentProductTypes = new ObservableCollection<ProductType>(ProductTypes);
-            //SelectedType = CurrentProductTypes[0];
-
-            //UpdateNotCapable();
-            //SelectedFormat = CurrentProductFormats[0];
 
 
 
@@ -219,11 +222,40 @@ namespace Printing_calc.ViewModel
             }
         }
 
+        public bool Discount
+        {
+            get { return discount; }
+            set
+            {
+                discount = value;
+                OnPropertyChanged("Discount");
+            }
+        }
+
+        public decimal DiscountNumber
+        {
+            get { return discountNumber; }
+            set
+            {
+                discountNumber = value;
+                OnPropertyChanged("DiscountNumber");
+            }
+        }
+        public decimal DiscountPercent
+        {
+            get { return discountPercent; }
+            set
+            {
+                discountPercent = value;
+                OnPropertyChanged("DiscountPercent");
+            }
+        }
 
 
-        public void CalculatePrintingCost()
+        public void CalculatePrintingCost() // TODO: Make a discount by const value and by percent
         {
             TotalCost = NumberOfPages * PricePerPage;
+            
         }
 
 
