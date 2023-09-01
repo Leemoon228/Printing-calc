@@ -133,9 +133,9 @@
         </StackPanel>
 
         <StackPanel x:Name="EachCostStack" Grid.Row="3" Orientation="Horizontal" >
-            <CheckBox x:Name="UsersCostCheck" VerticalAlignment="Center" IsEnabled="True" Checked="UsersPriceUsage" Unchecked="UsersPriceNotUsage"/>
-            <Label   Content="Стоимость экземпляра:" Width="135" Height="29" IsEnabled="False"/>
-            <TextBox  x:Name="txtPricePerPage" PreviewTextInput="FloatNumberValidationTextBox" IsEnabled="False"
+            <CheckBox x:Name="UsersCostCheck" VerticalAlignment="Center" IsEnabled="True" IsChecked="True" Checked="UsersPriceUsage" Unchecked="UsersPriceNotUsage"/>
+            <Label   Content="Стоимость экземпляра:" Width="135" Height="29"/>
+            <TextBox  x:Name="txtPricePerPage" PreviewTextInput="FloatNumberValidationTextBox"
                      Width="36" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
                      TextWrapping="NoWrap" TextAlignment="Center" />
 
