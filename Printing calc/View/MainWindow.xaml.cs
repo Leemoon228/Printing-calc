@@ -35,11 +35,16 @@ namespace Printing_calc
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
             viewModel.NumberOfPages = Int32.Parse(Empty_check(txtNumberOfPages.Text));
+
             string editedText = txtPricePerPage.Text.Replace(".", ",");
             if (editedText != "")
+
                 viewModel.PricePerPage = Decimal.Parse(editedText);
             else
                 viewModel.PricePerPage = 0;
+
+
+
             viewModel.CalculatePrintingCost();
         }
 
@@ -71,8 +76,27 @@ namespace Printing_calc
             Regex regex = new Regex("^\\d*[,.]?\\d*$");
             e.Handled = !regex.IsMatch(e.Text); // I dont know why, but somehow that deals exact what i need (float number in textbox)
         }
-            
 
-
+        private void UsersPriceUsage(object sender, RoutedEventArgs e)
+        {
+            foreach (UIElement item in EachCostStack.Children)
+            {
+                item.IsEnabled = true;
+            }
+        }
+        private void UsersPriceNotUsage(object sender, RoutedEventArgs e)
+        {
+            foreach (UIElement item in EachCostStack.Children)
+            {
+                if (item is CheckBox)
+                    continue;
+                item.IsEnabled = false;
+                if (item is TextBox textBoxItem)
+                    if (viewModel.SelectedFormat != null && viewModel.SelectedType != null)
+                        textBoxItem.Text = (viewModel.SelectedFormat.BaseCost + viewModel.SelectedType.BaseCost).ToString();
+                    else
+                        textBoxItem.Text = "";
+            }
+        }
     }
 }

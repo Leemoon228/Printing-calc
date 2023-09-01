@@ -7,7 +7,7 @@
         xmlns:viewmodel="clr-namespace:Printing_calc.ViewModel" 
         d:DataContext="{d:DesignInstance Type=viewmodel:PrintingCostCalculatorViewModel}"
         mc:Ignorable="d"
-        Title="Типографный калькулятор" Height="400" Width="650" MinWidth="600" MinHeight="350">
+        Title="Типографский калькулятор" Height="400" Width="650" MinWidth="600" MinHeight="350">
 
 
     <Grid Background="#FFE5BC">
@@ -99,7 +99,7 @@
 
             <StackPanel Margin="5,0,0,0" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <ComboBox HorizontalContentAlignment="Center" Width="160" 
-                      ItemsSource="{Binding CurrentProductTypes}" SelectedItem="{Binding SelectedType}" >
+                      ItemsSource="{Binding CurrentProductTypes1}" SelectedItem="{Binding SelectedType1}" >
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -132,10 +132,10 @@
                      TextWrapping="NoWrap" TextAlignment="Center"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" >
-            <CheckBox VerticalAlignment="Center"/>
-            <Label  Content="Стоимость экземпляра:" Width="152" Height="29"/>
-            <TextBox x:Name="txtPricePerPage" PreviewTextInput="FloatNumberValidationTextBox"
+        <StackPanel x:Name="EachCostStack" Grid.Row="3" Orientation="Horizontal" >
+            <CheckBox x:Name="UsersCostCheck" VerticalAlignment="Center" IsEnabled="True" Checked="UsersPriceUsage" Unchecked="UsersPriceNotUsage"/>
+            <Label   Content="Стоимость экземпляра:" Width="135" Height="29" IsEnabled="False"/>
+            <TextBox  x:Name="txtPricePerPage" PreviewTextInput="FloatNumberValidationTextBox" IsEnabled="False"
                      Width="36" Height="18" Margin="10,0" Style="{StaticResource TextInputStyle }" 
                      TextWrapping="NoWrap" TextAlignment="Center" />
 
